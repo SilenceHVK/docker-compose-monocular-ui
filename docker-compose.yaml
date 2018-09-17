@@ -5,7 +5,7 @@ services:
     tty: true # Enables debugging capabilities when attached to this container.
     image: dalongrong/monocular-ui-nginx
     ports:
-      - 80:80  
+      - 8090:80  
   api:
     tty: true
     image:  bitnami/monocular-api:latest
