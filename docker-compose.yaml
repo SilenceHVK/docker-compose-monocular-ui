@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  ui:
+    tty: true # Enables debugging capabilities when attached to this container.
+    image: dalongrong/monocular-ui-nginx
+    ports:
+      - 80:80  
+  api:
+    tty: true
+    image:  bitnami/monocular-api:latest
+    ports:
+    - "8081:8081"
+    volumes:
+      # Config example file
+      - ./docs/config.example.yaml:/root/monocular/config/monocular.yaml
+      # Used for loading kubernetes context used on Helm releases integration
+      - $HOME/.kube/:/root/.kube
+      - ./repo:/root/monocular/repo-data
+    environment:
+      - ENVIRONMENT=development
+  mongodb:
+    image: bitnami/mongodb:3
+    ports:
+    - "27017:27017"
+  redis:
+    image: redis
+    ports:
+    - "6379:6379"

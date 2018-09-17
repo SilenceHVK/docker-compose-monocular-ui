@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  ui:
+    tty: true # Enables debugging capabilities when attached to this container.
+    build: ./dev_env/ui
+    ports:
+      - 4200:4200
+    volumes:
+      - ./src/ui:/app
+    command: "ng serve --host 0.0.0.0 --proxy-config proxy.conf.json"
+  
+  api:
+    tty: true
+    image:  bitnami/monocular-api:latest
+    # build: ./dev_env/api
+    ports:
+    - "8080:8080"
+    - "44879:44879"
+    - "8081:8081"
+    volumes:
+      # - ./src/api:/go/src/github.com/helm/monocular/src/api
+      # Config example file
+      - ./docs/config.example.yaml:/root/monocular/config/monocular.yaml
+      # Used for loading kubernetes context used on Helm releases integration
+      - $HOME/.kube/:/root/.kube
+    environment:
+      - ENVIRONMENT=development
+  mongodb:
+    image: bitnami/mongodb:3
+    ports:
+    - "27017:27017"
+  redis:
+    image: redis

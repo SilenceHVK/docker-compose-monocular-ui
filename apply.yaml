@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tiller-service
+  namespace: kube-system
+  labels:
+    app: tiller-service
+spec:
+  type: NodePort
+  ports:
+  - port: 44134
+    targetPort: 44134
+    protocol: TCP
+    name: tiller-service
+  selector:
+    name: tiller
