@@ -6,7 +6,7 @@ api:
   image:
     repository: bitnami/monocular-api
     tag: v0.7.3
-    pullPolicy: Always
+    pullPolicy: Never
   service:
     name: monocular-api
     type: NodePort
@@ -30,20 +30,17 @@ api:
       clientSecret:
   config:
     repos:
-      # Official repositories
-      - name: stable
-        url: https://kubernetes-charts.storage.googleapis.com
-        source: https://github.com/kubernetes/charts/tree/master/stable
-      - name: incubator
-        url: https://kubernetes-charts-incubator.storage.googleapis.com
-        source: https://github.com/kubernetes/charts/tree/master/incubator
-      # Add your own repository
-      #- name: my-repo-name
+     - name: stable
+       url: https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts/
+       source: https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts/
+     - name: incubator
+       url: https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts-incubator/
+       source: https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts-incubator/
       #  url: my-repository-url
       #  source: my-repository-source
     cors:
       allowed_origins:
-        - ""
+        - "http://localhost:4200"
         # e.g. UI served on a different domain
         # - http://monocular.local
       allowed_headers:
@@ -53,7 +50,7 @@ api:
     releasesEnabled: true
     tillerNamespace: kube-system
     # Cache refresh interval in sec.
-    cacheRefreshInterval: 3600
+    cacheRefreshInterval: 1
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -62,7 +59,7 @@ ui:
   image:
     repository: bitnami/monocular-ui
     tag: v0.7.3
-    pullPolicy: Always
+    pullPolicy: Never
   service:
     name: monocular-ui
     type: NodePort
@@ -81,9 +78,9 @@ ui:
   googleAnalyticsId: UA-XXXXXX-X
   appName: Monocular
   # API served on same-domain at /api path using Nginx Ingress controller
-  backendHostname: /api
+  # backendHostname: /api
   # e.g. API served on a different domain
-  # backendHostname: http://monocular-api.local
+  backendHostname: http://172.16.79.161:22245
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -93,7 +90,7 @@ prerender:
   image:
     repository: migmartri/prerender
     tag: latest
-    pullPolicy: Always
+    pullPolicy: Never
   cacheEnabled: true
   service:
     name: prerender
@@ -109,11 +106,10 @@ prerender:
   affinity: {}
 
 ingress:
-  enabled: true
+  enabled: false
   hosts:
   # Wildcard
-  -
-  # - monocular.local
+   - monocular.local
 
   ## Ingress annotations
   ##
@@ -134,3 +130,7 @@ ingress:
 
 mongodb:
   mongodbDatabase: monocular
+  image:
+    pullPolicy: Never
+  persistence:
+    enabled: false  
