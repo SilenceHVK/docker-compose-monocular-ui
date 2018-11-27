@@ -58,6 +58,3 @@ $ docker-compose up -d
 ```
 
 ![运行结果](https://github.com/SilenceHVK/docker-compose-monocular-ui/raw/master/docs/MonocularScreenshot.gif)
-
-
-
